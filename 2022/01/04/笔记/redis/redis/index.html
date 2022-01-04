@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="主要应用还是在Linux上 redis-server.exe 启动redis的可执行文件resis-cli.exe 命令行客户端redistributio。windows.conf redis核心配置文件reid-benchmark.exe 性能测试工具redis-check-aof.exe AOF文件修复工具resis-check-dump.exe RDB文件检查工具（快照持久化文件） Red">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://example.com/2022/01/04/%E7%AC%94%E8%AE%B0/redis/redis/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="主要应用还是在Linux上 redis-server.exe 启动redis的可执行文件resis-cli.exe 命令行客户端redistributio。windows.conf redis核心配置文件reid-benchmark.exe 性能测试工具redis-check-aof.exe AOF文件修复工具resis-check-dump.exe RDB文件检查工具（快照持久化文件） Red">
+<meta property="og:locale">
+<meta property="og:image" content="g:/笔记/redis/image/RDB的优缺点.png">
+<meta property="og:image" content="c:/Users/10155/AppData/Roaming/Typora/typora-user-images/1581250179464.png">
+<meta property="og:image" content="g:/笔记/redis/image/RDB与AOF的选择.png">
+<meta property="og:image" content="g:/笔记/redis/image/分布式锁改良.png">
+<meta property="og:image" content="g:/笔记/redis/image/HyperLogLog相关说明.png">
+<meta property="og:image" content="g:/笔记/redis/image/GEO类型基本操作.png">
+<meta property="og:image" content="g:/笔记/redis/image/数据同步阶段工作流程.png">
+<meta property="og:image" content="g:/笔记/redis/image/数据同步阶段master说明.png">
+<meta property="og:image" content="g:/笔记/redis/image/数据同步阶段slave说明.png">
+<meta property="og:image" content="g:/笔记/redis/image/服务器运行ID.png">
+<meta property="og:image" content="g:/笔记/redis/image/复制缓冲区内部工作原理.png">
+<meta property="og:image" content="g:/笔记/redis/image/复制缓冲区.png">
+<meta property="og:image" content="g:/笔记/redis/image/主从服务器复制偏移量.png">
+<meta property="og:image" content="g:/笔记/redis/image/数据同步+命令传播阶段工作流程.png">
+<meta property="og:image" content="g:/笔记/redis/image/心跳机制.png">
+<meta property="og:image" content="g:/笔记/redis/image/心跳阶段注意事项.png">
+<meta property="og:image" content="g:/笔记/redis/image/主从复制工作流程.png">
+<meta property="og:image" content="g:/笔记/redis/image/频繁的全量复制.png">
+<meta property="og:image" content="g:/笔记/redis/image/频繁的全量复制2.png">
+<meta property="og:image" content="g:/笔记/redis/image/频繁的网络中断1.png">
+<meta property="og:image" content="g:/笔记/redis/image/频繁的网络中断2.png">
+<meta property="og:image" content="g:/笔记/redis/image/数据不一致.png">
+<meta property="og:image" content="g:/笔记/redis/image/配置哨兵.png">
+<meta property="og:image" content="g:/笔记/redis/image/Cluster配置.png">
+<meta property="og:image" content="g:/笔记/redis/image/Cluster节点操作指令.png">
+<meta property="og:image" content="g:/笔记/redis/image/缓存预热问题.png">
+<meta property="og:image" content="g:/笔记/redis/image/缓存预热解决方案.png">
+<meta property="og:image" content="g:/笔记/redis/image/数据库服务器奔溃1.png">
+<meta property="og:image" content="g:/笔记/redis/image/缓存雪崩问题.png">
+<meta property="og:image" content="g:/笔记/redis/image/1581394723490.png">
+<meta property="og:image" content="g:/笔记/redis/image/1581395000328.png">
+<meta property="og:image" content="g:/笔记/redis/image/1581395098163.png">
+<meta property="og:image" content="g:/笔记/redis/image/1581395164428.png">
+<meta property="og:image" content="g:/笔记/redis/image/1581395218959.png">
+<meta property="og:image" content="g:/笔记/redis/image/1581395451789.png">
+<meta property="og:image" content="g:/笔记/redis/image/1581395570527.png">
+<meta property="og:image" content="g:/笔记/redis/image/1581395659739.png">
+<meta property="og:image" content="g:/笔记/redis/image/1581395703894.png">
+<meta property="og:image" content="g:/笔记/redis/image/1581395814713.png">
+<meta property="og:image" content="g:/笔记/redis/image/1581396150760.png">
+<meta property="og:image" content="g:/笔记/redis/image/1581396300924.png">
+<meta property="og:image" content="g:/笔记/redis/image/1581396393168.png">
+<meta property="og:image" content="g:/笔记/redis/image/1581396550726.png">
+<meta property="og:image" content="g:/笔记/redis/image/1581396619370.png">
+<meta property="og:image" content="g:/笔记/redis/image/1581396766462.png">
+<meta property="og:image" content="g:/笔记/redis/image/1581396819992.png">
+<meta property="og:image" content="g:/笔记/redis/image/1581396845296.png">
+<meta property="og:image" content="g:/笔记/redis/image/1581397048191.png">
+<meta property="og:image" content="g:/笔记/redis/image/1581397166603.png">
+<meta property="article:published_time" content="2022-01-04T15:11:11.871Z">
+<meta property="article:modified_time" content="2020-02-11T05:01:00.220Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="g:/笔记/redis/image/RDB的优缺点.png">
+
+<link rel="canonical" href="http://example.com/2022/01/04/%E7%AC%94%E8%AE%B0/redis/redis/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh'
+  };
+</script>
+
+  <title> | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/01/04/%E7%AC%94%E8%AE%B0/redis/redis/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-01-04 23:11:11" itemprop="dateCreated datePublished" datetime="2022-01-04T23:11:11+08:00">2022-01-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-02-11 13:01:00" itemprop="dateModified" datetime="2020-02-11T13:01:00+08:00">2020-02-11</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p> 主要应用还是在Linux上</p>
+<p>redis-server.exe 启动redis的可执行文件<br>resis-cli.exe 命令行客户端<br>redistributio。windows.conf redis核心配置文件<br>reid-benchmark.exe 性能测试工具<br>redis-check-aof.exe AOF文件修复工具<br>resis-check-dump.exe RDB文件检查工具（快照持久化文件）</p>
+<p>Redis 基本操作<br>    命令行：<br>        功能性命令<br>        清屏命令  clear<br>        帮助信息查询  help 命令<br>        退出 quit  exic<br>        获取当前系统时间 time</p>
+<p>​        info<br>​<br>添加信息<br>​    功能：设置key：value<br>​    set name “”<br>​    get name<br>​    重复设置会覆盖<br>​<br>redis<br>​    业务数据的特殊性<br>​    作为缓存使用<br>​        1.原始业务功能设计<br>​            1.秒杀<br>​            2.618活动<br>​            3.双十一活动<br>​            4.排队购票<br>​        2.运营平台监控到突发高频次访问<br>​            突发时政要闻，被强势关注<br>​        3.高频、复杂的统计数据<br>​            在线人数<br>​    附加功能<br>​        系统功能优化或升级<br>​            1.单服务器升级集群<br>​            2.Session管理<br>​            3.Token管理<br>​    数据类型<br>​    1.String<br>​    2.hash     HashMap<br>​    3.list     LinkedList<br>​    4.set      HashSet<br>​    5.sorted_set   TreeSet<br>​<br>redis 存储格式<br>​    redistribution自身是一个Map，其中所有的数据都是采用key:value 的形式储存<br>​    数据类型是指存储的数据的类型，也就是value部分的类型，key部分永远都是字符串<br>​<br>​<br>String<br>​    单个数据，一个存储空间一个数据、<br>​    set key value<br>​    get key<br>​    del key<br>​    </p>
+<pre><code>mset key1 value1 key2 value2....      m--&gt;Nutiple
+mget key1 key2...
+
+获取字符长度   strlen key
+追加 信息到原始信息后面
+append key value
+
+扩展操作
+    inor key
+    inorby key increment
+    incrbyfloat key increment
+设置数值数据减少范围的值
+    decr key
+    decrby key increment
+设置数据具有指定的生命周期
+    setex key seconds value
+    psetex key milliseconds value
+</code></pre>
+<p>hash 类型数据的基本操作<br>​    1.添加/修改数据<br>​        hset key fieiId value<br>​    2.获取数据<br>​        hget key fieiId<br>​        hgetall key<br>​    3.删除数据<br>​        hdel key fieiId [fieiId2]<br>​    4.添加/修改多个数据<br>​        hmset key fieId1 value1 fieId2 value2<br>​    5.获取多个数据<br>​        hmset key  fieId1 fieId2<br>​    5.获取哈希表中字段的数量<br>​        hlen key<br>​    6. 获取哈希表中是否存在指定的字段<br>​        hexsts key fieId<br>​    7.获取哈希表中所有的字段名或字段值<br>​        hkeys key<br>​        value key<br>​    8.设置指定字段的数值数据增加范围的值<br>​        hincrby key dieId increment<br>​        hincrbyfloat key dieId increment<br>​    hsetnx key fieId value 避免覆盖<br>​<br>​<br>​    set类型<br>​        存储大量的数据类型，在查询方面提供更高的效率<br>​        能够保存大量的数据，高效的内部存储机制，便于查询<br>​        与hash存储结构完全相同，仅存键，不存值值，并且值是不允许重复的<br>​<br>​        添加数据<br>​            asdd key  member1 [member2]<br>​        获取全部数据<br>​            smember key<br>​        删除数据<br>​            srem key member [member2]<br>​        获取数据集合的总量<br>​            scard key<br>​        判断集合中是否包含指定数据<br>​            sismember key member1<br>​        随机获取集合中指定数量的数据<br>​            srandmember key [count]<br>​        数据获取集合中的某个数据并将该数据移出集合<br>​            spop key<br>​<br>        扩展操作<br>            求两个集合的交、并、差<br>                sinter key1 key2<br>                sun key1 key2<br>                sdiff key1<br>            求两个集合的交、并、差，并储存在指定的集合中<br>                sinterstore destination key1 key2<br>                sunterstore destination key1 key2<br>                sdiffstore destination key1 key2<br>            将指定数据从原始集合中移动到目标集合中<br>                smove scurce destination member</p>
+<pre><code>sorted_set 基本操作
+    1.添加数据
+        zadd key sorce1 member1 [sorce2 member2]
+    2.获取全部数据
+        zrange key start stop [WIThSCORES]
+        zrevrange key start stop [WIThSCORES]
+    3.删除数据
+        zrem key member [member...]
+    3.按条件获取数据
+        zrangebyscore key min max [WIThSCORES] [LIMIT]
+        zrevrangebysscore key max min [WIThSCORES]
+    4.条件删除数据
+        zremrangebyrank key start stop
+        zremrangescore key min max
+    5.获取集合数据总量
+        zcard key
+        zcount key min max
+    6.集合交、并操作
+        zinterstore destination numkeys key [key...]
+        zunionstore destination numkeys key [key...]
+    7.获取数据索引 对应的索引
+        zrank key member
+        zreevrank key member
+    8.score值获取与修改
+        zscore key member
+        zinorby key increment member
+        
+key的通用操作
+    1.删除指定key
+        del key
+    2.获取key是否存在
+        exists key
+    3.获取key 的类型
+        tepy key
+key扩展操作（时效性0）
+    1.为指定key设置有效期
+        expire key seconds
+        pexpire key milliseconds
+        expireat key timestamp
+        pexpireat key milliseconds
+    2.获取key的有效时间
+        ttl key   存在返回-1 存在有时间返回时间 不存在-2
+        pttl key
+    3.切换 key从时效性转为永久
+        persist key
+key扩展操作（查询模式）
+    keys pattern   （keys * 查看所有）
+key其他操作
+    1.为key改名
+        rename key newkey (key存在的话  可能造成数据丢失)
+        renaenx key newkey
+    2.对所有key排序
+        sort
+    3.其他key通用操作
+        help @generic
+</code></pre>
+<p>​<br>​    数据库通用指令<br>​        db 基本操作<br>​            1. 切换数据库<br>​                select index<br>​            2.其他操作<br>​                quit    退出<br>​                ping    服务连通性<br>​                echo message   控制台输出<br>​<br>​            3.数据移动<br>​                move key db   （移动后删除）<br>​            4.数据清除<br>​                dbsize<br>​                flushdb<br>​                flushall<br>​<br>​    save指令相关配置<br>​        dbfilename dump.rdb 设置本地数据库文件名，默认dump.rdb<br>​        dir 设置存储.edb文件的路径<br>​        rdbcompression yes 是否采用压缩格式<br>​        rdbchecksum yes 是否进行RDB文件校验<br>​    bgsave 相关配置  启动一个线程  后台进行保存<br>​        stop-writes-on-bgsave-error yes<br>​<br>​    save启动方式  —save配置<br>​        配置<br>​            save second change<br>​        作用<br>​            满足限定时间范围类key的变化数量到达指定数量即进行持久化<br>​        参数<br>​            second：监控时间范围<br>​            change:监控key的变化量</p>
+<p>​    RDB的优缺点<br>​    <img src="G:\笔记\redis\image\RDB的优缺点.png" alt="1581245668099">    AOF：<br>​        不写全数据，仅记录部分数据；改为记录数据为记录操作过程；对所有操作均进行记录，排除丢失数据的风险    </p>
+<pre><code>AOF写数据三种策略
+</code></pre>
+<p>​        always （每次）<br>​            每次写入操作均同步到AOF文件中，数据零误差，性能差<br>​        everysec （每秒）默认<br>​            每秒将缓存中的指令同步到AOF文件中，数据准确性高，性能差<br>​            系统宕机的情况下丢失一秒的数据<br>​        no（系统控制）<br>​            由操作系统控制每次同步到AOF文件的周期，整体不可控<br>​    AOF功能开启<br>​        配置<br>​            <strong>appendonly</strong> yes|no<br>​        作用<br>​            是否开启AOF持久化功能，默认为不开启<br>​        配置<br>​            <strong>appenfsync</strong> always|everysec|no<br>​        作用<br>​            AOF写文件策略<br>​        配置<br>​            <strong>appendfilename</strong> filenme<br>​        作用<br>​            设置文件名<br>​        配置<br>​            <strong>dir</strong><br>​        作用<br>​            AOF持久化文件保存路径，与RDB持久化文件保持一致即可<br>​    AOF重写方式<br>​        手动重写<br>​            bgrewriteaof<br>​        自动重写<br>​            <strong>auto-aof-rewrite-min-size</strong> size<br>​            <strong>auto-aof-rewrite-percentage</strong> percentage    </p>
+<p>AOF自动从写方式<br>            <img src="C:\Users\10155\AppData\Roaming\Typora\typora-user-images\1581250179464.png" alt="1581250179464"></p>
+<p>RDB与AOF的选择<br>    <img src="G:\笔记\redis\image\RDB与AOF的选择.png" alt="1581250774317"></p>
+<p>事务的基本操作<br>    1.开启事务<br>        multi<br>    2.执行事务<br>        exec<br>    3.取消事务<br>        discard</p>
+<p>​    基于特定条件的事务执行——锁<br>​        对key添加监视，在执行exec前如果key发生了变化，终止事务执行<br>​            watch key1 [key2]<br>​        取消对所有key的监视<br>​            unwatch</p>
+<p>​    基于特定条件的事务执行——分布式锁<br>​        使用settnx设置一个公共锁<br>​            <strong>setnx</strong> lock-key value<br>​            通过删除进行释放</p>
+<p>​    基于特定条件的事务执行——分布式锁改良<br>​        expire lock-key second<br>​        pexpire lock-key milliseconds<br><img src="G:\笔记\redis\image\分布式锁改良.png" alt="1581254525535"></p>
+<p>​    Redis删除策略<br>​        1.定时删除，当key的过期时间到达，有定时器立即删除；cup压力大，节约内存<br>​        2.惰性删除，数据到达过期时间，不做处理。等下次访问该数据时。与上相反<br>​        3.定期删除，随机挑选W个key配置<br>​            <strong>ACTIVE_EXPIRE_CYCLE_LOOKUPS_PER_LOOP</strong>    count </p>
+<p>​        逐出算法，当数据进入时内存不足，会清理空间。清理失败返回错误<br>​            最大可用内存配置<br>​                <strong>maxmemory</strong><br>​            每次选取待删除数据个数<br>​                <strong>maxmemory-samples</strong><br>​            删除策略<br>​                <strong>maxmemory-policy</strong> volatile-lru<br>​                    检测易失数据（可能会过期的数据集server.db[i].expires）<br>​                    1.volatile-lru: 挑选最近最少使用的数据淘汰<br>​                    2.volatile-lfu：挑选最近使用次数最少的数据淘汰<br>​                    3.volatile-ttl：挑选将要过期的数据淘汰<br>​                    4.volatile-random：任意选择数据淘汰<br>​                    检测全库数据（所有数据集server.db[i].dict）<br>​                        allkeys-lru:挑选最近最少使用的数据淘汰<br>​                        allkeys-lfu:挑选最近使用次数最少的数据淘汰<br>​                        allkeys-random:任意选择数据淘汰<br>​                    放弃数据驱逐<br>​                        8.no-enviction（驱逐）：禁止驱逐数据（redis4.0中默认策略），会引发错误OOM（Out of Memory）</p>
+<p>​    服务器基础配置<br>​        服务器设定<br>​            设置服务器以守护进程的方式运行<br>​                <strong>daemonize</strong> yes|no<br>​            绑定主机<br>​                <strong>bind</strong> 127.0.0.0<br>​            设置服务器端口号<br>​                <strong>port</strong> 6379<br>​            设置数据库数量<br>​                <strong>database</strong> 16<br>​        日志配置<br>​            设置服务器一指定日志记录级别<br>​                <strong>loglevel</strong> debug|<strong>verbose</strong>|notice|warning<br>​            日志记录文件名<br>​                <strong>logfile</strong> 端口号.log<br>​        客户端配置<br>​            设置同一时间最大客户端连接数，默认无限制。当客户连接到达上限，Redistribution会关闭新的连接<br>​                maxclients 0<br>​            客户端闲置等待最长时间，到达最大值后关闭连接。如需关闭，设置为0；<br>​                timeout 300<br>​        多服务器快捷配置<br>​            导入并加载指定配置文件信息，用于快速创建redis公共配置较多的redid实例配置文件，便于维护<br>​                include /path/server-端口号.conf</p>
+<p>高级数据类型<br>    Bitmaps类型的基础操作<br>        获取指定key对应偏移量上的bit值<br>            <strong>getbit</strong> key offset<br>        设置 指定key对应偏移量上的bit值，value只能是1或0<br>            <strong>setbit</strong> key offset value<br>    Bitmaps类型的扩展操作<br>        对指定key按位进行交、并、非、异或操作，并将结果保存到destKey中<br>            <strong>bitop</strong> op destKey key1 [key….]<br>                and、or、not、xor<br>        统计指定key中1的数量<br>            <strong>bitcount</strong> key [start end]</p>
+<p>​    HyperLogLog 基数统计； 统计不重复<br>​        添加数据<br>​            <strong>pfadd</strong> key element [element]<br>​        统计数据<br>​            <strong>pfcount</strong> key [key…]<br>​        合并数据<br>​            <strong>pfmerge</strong> destkey sourcekey [sourcekey …]<br>​    HyperLogLog相关说明<br><img src="G:\笔记\redis\image\HyperLogLog相关说明.png" alt="1581315109060"></p>
+<p>​    GEO类型的基本操作<br>​        添加坐标<br>​            geoadd key longitude latitude member [longitu latitude member …]<br>​        获取坐标<br>​            geopos keu member [member…]<br>​        j计算坐标距离<br>​            geodist key member1 member2 [unot]<br><img src="G:\笔记\redis\image\GEO类型基本操作.png" alt="1581315724919"><br>​    主从连接（slave连接master）<br>​        方式一：客户端发送命令<br>​            slaveof <masterip> <materport><br>​        方式二：启动服务器参数<br>​            redis-server -slaveof <masterip> <materport><br>​        方式三：服务器配置<br>​            slaveof  <masterip> <materport><br>​        slave系统消息<br>​            master_link_down_since_seconds           master 系统消息<br>​            masterhost                        slave_listening_port(多个)<br>​            masterport<br>​    授权访问<br>​        master配置文件设置密码<br>​            <strong>requirepass</strong> <password><br>​        master客户端发送命令设置密码<br>​            <strong>config</strong> set requirepass <password><br>​            <strong>config</strong> get requirepass<br>​        slave客户端发送命令设置密码<br>​            <strong>auth</strong><password><br>​        slave配置文件设置密码<br>​            <strong>masterauth</strong> <password><br>​        启动客户端设置密码<br>​            <strong>redis-cli</strong> -a <password></p>
+<p>​    数据同步阶段工作流程<br><img src="G:\笔记\redis\image\数据同步阶段工作流程.png" alt="1581328506812"></p>
+<p>​    数据同步阶段master说明<br> <img src="G:\笔记\redis\image\数据同步阶段master说明.png" alt="1581331282081"></p>
+<p>​    数据同步阶段slave说明   slave最好对外不提供写的功能<br><img src="G:\笔记\redis\image\数据同步阶段slave说明.png" alt="1581331488345"></p>
+<p>服务器运行ID<br><img src="G:\笔记\redis\image\服务器运行ID.png" alt="1581331754523"></p>
+<p>复制缓冲区内部工作原理<br><img src="G:\笔记\redis\image\复制缓冲区内部工作原理.png" alt="1581332332830"></p>
+<p>复制缓冲区<br><img src="G:\笔记\redis\image\复制缓冲区.png" alt="1581332513876"></p>
+<p>主从服务器复制偏移量（offset）<br><img src="G:\笔记\redis\image\主从服务器复制偏移量.png" alt="1581332611149"></p>
+<p>数据同步+命令传播阶段工作流程<br><img src="G:\笔记\redis\image\数据同步+命令传播阶段工作流程.png" alt="1581333120175"></p>
+<p>心跳机制<br><img src="G:\笔记\redis\image\心跳机制.png" alt="1581333207387"></p>
+<p>心跳阶段注意事项<br><img src="G:\笔记\redis\image\心跳阶段注意事项.png" alt="1581333385228"></p>
+<p>主从复制工作流程（完整）<br><img src="G:\笔记\redis\image\主从复制工作流程.png" alt="1581333618726"></p>
+<p>频繁的全量复制<br><img src="G:\笔记\redis\image\频繁的全量复制.png" alt="1581333696719"></p>
+<p><img src="G:\笔记\redis\image\频繁的全量复制2.png" alt="1581333914675"></p>
+<p>频繁的网络中断<br><img src="G:\笔记\redis\image\频繁的网络中断1.png" alt="1581334139787"></p>
+<p><img src="G:\笔记\redis\image\频繁的网络中断2.png" alt="1581334233567"></p>
+<p>数据不一致<br><img src="G:\笔记\redis\image\数据不一致.png" alt="1581334306620"></p>
+<p>配置哨兵</p>
+<p><img src="G:\笔记\redis\image\配置哨兵.png" alt="1581335373019"></p>
+<p>Cluster配置</p>
+<p><img src="G:\笔记\redis\image\Cluster配置.png" alt="1581393314818"></p>
+<p>Cluster节点操作指令<br><img src="G:\笔记\redis\image\Cluster节点操作指令.png" alt="1581393419074"></p>
+<p>缓存预热<br>服务启动后快速宕机<br><img src="G:\笔记\redis\image\缓存预热问题.png" alt="1581393882575"></p>
+<p><img src="G:\笔记\redis\image\缓存预热解决方案.png" alt="1581393922855"></p>
+<p>缓存雪崩<br><img src="G:\笔记\redis\image\数据库服务器奔溃1.png" alt="1581394188702"></p>
+<p><img src="G:\笔记\redis\image\缓存雪崩问题.png" alt="1581394236031"></p>
+<p><img src="G:\笔记\redis\image\1581394723490.png" alt="1581394723490"></p>
+<p><img src="G:\笔记\redis\image\1581395000328.png" alt="1581395000328"></p>
+<p>缓存击穿<br><img src="G:\笔记\redis\image\1581395098163.png" alt="1581395098163"></p>
+<p><img src="G:\笔记\redis\image\1581395164428.png" alt="1581395164428"></p>
+<p><img src="G:\笔记\redis\image\1581395218959.png" alt="1581395218959"></p>
+<p><img src="G:\笔记\redis\image\1581395451789.png" alt="1581395451789"></p>
+<p>缓存穿透<br><img src="G:\笔记\redis\image\1581395570527.png" alt="1581395570527"></p>
+<p><img src="G:\笔记\redis\image\1581395659739.png" alt="1581395659739"></p>
+<p><img src="G:\笔记\redis\image\1581395703894.png" alt="1581395703894"></p>
+<p><img src="G:\笔记\redis\image\1581395814713.png" alt="1581395814713"></p>
+<p><img src="G:\笔记\redis\image\1581396150760.png" alt="1581396150760"></p>
+<p>性能指标监控<br><img src="G:\笔记\redis\image\1581396300924.png" alt="1581396300924"></p>
+<p><img src="G:\笔记\redis\image\1581396393168.png" alt="1581396393168"></p>
+<p><img src="G:\笔记\redis\image\1581396550726.png" alt="1581396550726"></p>
+<p><img src="G:\笔记\redis\image\1581396619370.png" alt="1581396619370"></p>
+<p><img src="G:\笔记\redis\image\1581396766462.png" alt="1581396766462"></p>
+<p><img src="G:\笔记\redis\image\1581396819992.png" alt="1581396819992"></p>
+<p><img src="G:\笔记\redis\image\1581396845296.png" alt="1581396845296"></p>
+<p><img src="G:\笔记\redis\image\1581397048191.png" alt="1581397048191"></p>
+<p><img src="G:\笔记\redis\image\1581397166603.png" alt="1581397166603"></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/01/04/%E7%AC%94%E8%AE%B0/mysql/mysql/" rel="prev" title="">
+      <i class="fa fa-chevron-left"></i> 
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/01/04/%E7%AC%94%E8%AE%B0/SQL/sql%E4%B8%AD%E6%9C%80%E9%87%8D%E8%A6%81%E7%9A%84DDL%E8%AF%AD%E5%8F%A5/" rel="next" title="">
+       <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">32</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

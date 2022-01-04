@@ -20,15 +20,21 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta property="og:type" content="website">
+  <meta name="description" content="Android中的异步消息处理主要由4个部分组成：Message、Handle、MessageQueue和Loper  Message  ​    Message是线程之间传递的消息，它可以在内部携带少量的信息，用于不同线程之间交换数据  Handle 处理者，主要用于发送和处理消息。发送消息一般是使用Handle的setMessage（）方法，而发送的消息经过一系列地辗转处理后，最终会传递到Ha">
+<meta property="og:type" content="article">
 <meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://example.com/archives/2022/01/index.html">
+<meta property="og:url" content="http://example.com/2022/01/04/%E7%AC%94%E8%AE%B0/UI%E5%BC%80%E5%8F%91/%E5%BC%82%E6%AD%A5%E6%B6%88%E6%81%AF%E5%A4%84%E7%90%86%E6%9C%BA%E5%88%B6/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Android中的异步消息处理主要由4个部分组成：Message、Handle、MessageQueue和Loper  Message  ​    Message是线程之间传递的消息，它可以在内部携带少量的信息，用于不同线程之间交换数据  Handle 处理者，主要用于发送和处理消息。发送消息一般是使用Handle的setMessage（）方法，而发送的消息经过一系列地辗转处理后，最终会传递到Ha">
 <meta property="og:locale">
+<meta property="og:image" content="e:/笔记/img/异步消息处理机制流程示意图.png">
+<meta property="article:published_time" content="2022-01-04T15:11:12.721Z">
+<meta property="article:modified_time" content="2020-04-06T12:28:36.573Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="e:/笔记/img/异步消息处理机制流程示意图.png">
 
-<link rel="canonical" href="http://example.com/archives/2022/01/">
+<link rel="canonical" href="http://example.com/2022/01/04/%E7%AC%94%E8%AE%B0/UI%E5%BC%80%E5%8F%91/%E5%BC%82%E6%AD%A5%E6%B6%88%E6%81%AF%E5%A4%84%E7%90%86%E6%9C%BA%E5%88%B6/">
 
 
 <script id="page-configurations">
@@ -36,12 +42,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'zh'
   };
 </script>
 
-  <title>Archive | Hexo</title>
+  <title> | Hexo</title>
   
 
 
@@ -140,235 +146,104 @@
         <div class="content-wrap">
           
 
-          <div class="content archive">
+          <div class="content post posts-expand">
             
 
+    
   
   
-  
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        
-        <span class="collection-header">OK! 32 posts in total. Keep on posting.</span>
-      </div>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/01/04/%E7%AC%94%E8%AE%B0/UI%E5%BC%80%E5%8F%91/%E5%BC%82%E6%AD%A5%E6%B6%88%E6%81%AF%E5%A4%84%E7%90%86%E6%9C%BA%E5%88%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-01-04 23:11:12" itemprop="dateCreated datePublished" datetime="2022-01-04T23:11:12+08:00">2022-01-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-04-06 20:28:36" itemprop="dateModified" datetime="2020-04-06T20:28:36+08:00">2020-04-06</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <span class="collection-header">2022</span>
-    </div>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2022-01-04T23:11:12+08:00"
-              content="2022-01-04">
-          01-04
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2022/01/04/%E7%AC%94%E8%AE%B0/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%BA%BF%E7%A8%8B%E6%B1%A0/" itemprop="url">
-            <span itemprop="name">Untitled</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2022-01-04T23:11:12+08:00"
-              content="2022-01-04">
-          01-04
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2022/01/04/%E7%AC%94%E8%AE%B0/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" itemprop="url">
-            <span itemprop="name">Untitled</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2022-01-04T23:11:12+08:00"
-              content="2022-01-04">
-          01-04
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2022/01/04/%E7%AC%94%E8%AE%B0/UI%E5%BC%80%E5%8F%91/%E5%BC%82%E6%AD%A5%E6%B6%88%E6%81%AF%E5%A4%84%E7%90%86%E6%9C%BA%E5%88%B6/" itemprop="url">
-            <span itemprop="name">Untitled</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2022-01-04T23:11:12+08:00"
-              content="2022-01-04">
-          01-04
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2022/01/04/%E7%AC%94%E8%AE%B0/UI%E5%BC%80%E5%8F%91/UI%E6%9B%B4%E6%96%B0/" itemprop="url">
-            <span itemprop="name">Untitled</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2022-01-04T23:11:12+08:00"
-              content="2022-01-04">
-          01-04
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2022/01/04/%E7%AC%94%E8%AE%B0/UI%E5%BC%80%E5%8F%91/TextView/" itemprop="url">
-            <span itemprop="name">Untitled</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2022-01-04T23:11:12+08:00"
-              content="2022-01-04">
-          01-04
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2022/01/04/%E7%AC%94%E8%AE%B0/UI%E5%BC%80%E5%8F%91/EditText/" itemprop="url">
-            <span itemprop="name">Untitled</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2022-01-04T23:11:12+08:00"
-              content="2022-01-04">
-          01-04
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2022/01/04/%E7%AC%94%E8%AE%B0/UI%E5%BC%80%E5%8F%91/Button/" itemprop="url">
-            <span itemprop="name">Untitled</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2022-01-04T23:11:12+08:00"
-              content="2022-01-04">
-          01-04
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2022/01/04/%E7%AC%94%E8%AE%B0/UI%E5%BC%80%E5%8F%91/4%E7%A7%8D%E5%9F%BA%E6%9C%AC%E5%B8%83%E5%B1%80/" itemprop="url">
-            <span itemprop="name">Untitled</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2022-01-04T23:11:12+08:00"
-              content="2022-01-04">
-          01-04
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2022/01/04/%E7%AC%94%E8%AE%B0/SQL/sql%E4%B8%AD%E6%9C%80%E9%87%8D%E8%A6%81%E7%9A%84DDL%E8%AF%AD%E5%8F%A5/" itemprop="url">
-            <span itemprop="name">Untitled</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2022-01-04T23:11:11+08:00"
-              content="2022-01-04">
-          01-04
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2022/01/04/%E7%AC%94%E8%AE%B0/redis/redis/" itemprop="url">
-            <span itemprop="name">Untitled</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
+        <p>Android中的异步消息处理主要由4个部分组成：Message、Handle、MessageQueue和Loper</p>
+<ol>
+<li><strong>Message</strong></li>
+</ol>
+<p>​    Message是线程之间传递的消息，它可以在内部携带少量的信息，用于不同线程之间交换数据</p>
+<ol start="2">
+<li><p><strong>Handle</strong></p>
+<p>处理者，主要用于发送和处理消息。发送消息一般是使用Handle的setMessage（）方法，而发送的消息经过一系列地辗转处理后，最终会传递到Handle的handleMessage（）方法中</p>
+</li>
+<li><p><strong>MessageQueue</strong></p>
+<p>MessageQueue 是消息队列的意思，他主要是用于发送和处理消息的；这部分消息会一直存在消息队列中，等待被处理，每个线程中只会有一个MessageQueue 对象</p>
+</li>
+<li><p><strong>Looper</strong></p>
+<p>Looper是Message的管家，调用Looper的loop()方法后，就会进入到一个无限循环中，然后每当发现MessageQueue中存在一条消息，就会被取出，并传递到Handle的handleMessage()方法中</p>
+</li>
+</ol>
+<p><strong>处理流程</strong></p>
+<p><img src="E:\笔记\img\异步消息处理机制流程示意图.png" alt="1555565772732"></p>
 
     </div>
-  </div>
-  
-  
-  
 
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/01/04/%E7%AC%94%E8%AE%B0/UI%E5%BC%80%E5%8F%91/UI%E6%9B%B4%E6%96%B0/" rel="prev" title="">
+      <i class="fa fa-chevron-left"></i> 
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/01/04/%E7%AC%94%E8%AE%B0/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="next" title="">
+       <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
   
-  <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/archives/2022/01/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/archives/2022/01/page/4/">4</a><a class="extend next" rel="next" href="/archives/2022/01/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
-  </nav>
+  
+  
 
 
 
