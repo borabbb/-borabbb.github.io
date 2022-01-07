@@ -93,10 +93,10 @@ index_with_subtitle: false
 # Value after `||` delimeter is the name of FontAwesome icon. If icon (with or without delimeter) is not specified, question icon will be loaded.
 menu:
   home: /
- # about: /about/ || user
+ # about: /about/
   tags: /tags/
   categories: /categories/
-  archives: /archives/ 
+  archives: /archives/
  # schedule: /schedule/ || calendar
  # sitemap: /sitemap.xml || sitemap
  # commonweal: /404/ || heartbeat
@@ -214,7 +214,8 @@ sidebar:
   b2t: false
 
   # Scroll percent label in b2t button.
-  scrollpercent: false
+  # 侧边栏显示阅读进度
+  scrollpercent: true
 
   # Enable sidebar on narrow view (only for Muse | Mist).
   onmobile: false
@@ -624,7 +625,7 @@ algolia_search:
 # Local search
 # Dependencies: https://github.com/flashlab/hexo-generator-search
 local_search:
-  enable: false
+  enable: true
   # if auto, trigger search by changing input
   # if manual, trigger search by pressing enter key or search button
   trigger: auto
@@ -822,6 +823,17 @@ vendors:
   # needMoreShare2
   # https://github.com/revir/need-more-share2
   needMoreShare2:
+
+related_posts:
+  enable: true
+  title: hexo+github next博客搭建      # 属性的命名
+  display_in_home: true # false代表首页不显示
+  params:
+    maxCount: 5          # 最多5条
+    #PPMixingRate: 0.0   # 相关度
+    #isDate: true        # 是否显示日期
+    #isImage: false      # 是否显示配图
+    isExcerpt: false     # 是否显示摘要
 
 
 # Assets

@@ -14,7 +14,12 @@ timezone: ''
 # URL
 ## Set your site url here. For example, if you use GitHub Page, set url as 'https://username.github.io/project'
 url: http://example.com
-permalink: :year/:month/:day/:title/
+# ermalink: :year/:month/:day/:title/
+permalink: post/:abbrlink.html
+abbrlink:
+  alg: crc32  # 算法：crc16(default) and crc32
+  rep: hex    # 进制：dec(default) and hex
+  
 permalink_defaults:
 pretty_urls:
   trailing_index: true # Set to false to remove trailing 'index.html' from permalinks
@@ -105,3 +110,9 @@ deploy:
   type: 'git'
   repository: https://github.com/borabbb/borabbb.github.io
   branch: main
+
+search:
+  path: search.xml #之前就是这里出了问题导致图标错误
+  field: all
+  format: html
+  limit: 1000
