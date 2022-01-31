@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title></title>
+    <url>/post/0.html</url>
+    <content><![CDATA[<h3 id="数据仓库-DW"><a href="#数据仓库-DW" class="headerlink" title="数据仓库-DW"></a>数据仓库-DW</h3><p>数据仓库是一个面向主题、集成、稳定的、能反映历史变化的、随时发生变化的数据集合</p>
+<p>面向主题</p>
+<p>​    一般的操作型数据库主要是面向事务性处理的，而数据仓库中的数据是按照主题进行划分，如客户主题（客户信息、信用信息、资产信息）、产品主题、财务主题</p>
+<p>集成性：数据集 沉鱼少 编码统一</p>
+<p>稳定性：</p>
+<p>反应历史变化：</p>
+<p>DW不断从OLDP中获取数据</p>
+<p><img src="../../images/image-20220118103820008.png" alt="image-20220118103820008"></p>
+<h3 id="数据集市-DM"><a href="#数据集市-DM" class="headerlink" title="数据集市-DM"></a>数据集市-DM</h3><p>​    满足特殊用户群体</p>
+<p>​    面向主题，集成的数据集合</p>
+<p>​    星型结构或雪花数据结构</p>
+<p>​    一般由一张事实表和几张维度表组成</p>
+<p>数据仓库实施 ODS</p>
+<p>把数据源的经过抽取清洗转换加载</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>spring propertiess解析</title>
+    <url>/post/48543096.html</url>
+    <content><![CDATA[<h2 id=""><a href="#" class="headerlink" title=""></a></h2><h3 id="PropertySource"><a href="#PropertySource" class="headerlink" title="@PropertySource"></a>@PropertySource</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@ComponentScan(value = &quot;com.xiaoyun&quot;)</span></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@PropertySource(value = &#123;&quot;classpath:propertySource.properties&quot;&#125;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AppScan</span> </span>&#123;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Target(ElementType.TYPE)</span></span><br><span class="line"><span class="meta">@Retention(RetentionPolicy.RUNTIME)</span></span><br><span class="line"><span class="meta">@Documented</span></span><br><span class="line"><span class="meta">@Repeatable(PropertySources.class)</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> PropertySource &#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">   <span class="function">String <span class="title">name</span><span class="params">()</span> <span class="keyword">default</span> &quot;&quot;</span>;</span><br><span class="line"></span><br><span class="line">   String[] value();</span><br><span class="line"></span><br><span class="line">  资源不存在是是否忽略，如果为<span class="keyword">true</span>资源不存在报错</span><br><span class="line">   <span class="function"><span class="keyword">boolean</span> <span class="title">ignoreResourceNotFound</span><span class="params">()</span> <span class="keyword">default</span> <span class="keyword">false</span></span>;</span><br><span class="line"></span><br><span class="line">	资源文件的编码格式</span><br><span class="line">   <span class="function">String <span class="title">encoding</span><span class="params">()</span> <span class="keyword">default</span> &quot;&quot;</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 默认工厂PropertySourceFactory</span></span><br><span class="line">   Class&lt;? extends PropertySourceFactory&gt; factory() <span class="keyword">default</span> PropertySourceFactory.class;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>这里主要获取到注解，因为注解可能有多个所以这里是个数组</p>
+<p><img src="../../images/image-20220113104504919.png" alt="image-20220113104504919"></p>
+<p>解释一下environment的值，上面的入口是在ConfigurationClassPostProstProcessor中调用的</p>
+<p><img src="../../images/image-20220113104821159.png" alt="image-20220113104821159"></p>
+<p>看一下这个类的定义实现接口 EnvironmentAware</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ApplicationContextAwareProcessor</span> <span class="keyword">implements</span> <span class="title">BeanPostProcessor</span> </span>&#123;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConfigurationClassPostProcessor</span> <span class="keyword">implements</span> <span class="title">BeanDefinitionRegistryPostProcessor</span>,</span></span><br><span class="line"><span class="class">      <span class="title">PriorityOrdered</span>, <span class="title">ResourceLoaderAware</span>, <span class="title">BeanClassLoaderAware</span>, <span class="title">EnvironmentAware</span> </span>&#123;</span><br></pre></td></tr></table></figure>
+
+<p>当ConfigurationClassPostProcessor实例化的时候EnvironmentAware进行赋值</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (bean <span class="keyword">instanceof</span> EnvironmentAware) &#123;</span><br><span class="line">   ((EnvironmentAware) bean).setEnvironment(<span class="keyword">this</span>.applicationContext.getEnvironment());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setEnvironment</span><span class="params">(Environment environment)</span> </span>&#123;</span><br><span class="line">   Assert.notNull(environment, <span class="string">&quot;Environment must not be null&quot;</span>);</span><br><span class="line">   <span class="keyword">this</span>.environment = environment;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>继续主流程</p>
+<p>下图处理主要是@PropertySource注解属性解析获取到资源文件路径然后执行addPropertySource方法</p>
+<p><img src="../../images/image-20220113111401643.png" alt="image-20220113111401643"></p>
+<p>将属性文件值加载到propertysource中，这里有三个propertuSources 分别是系统环境变量，程序运行设置属性值，和自定义资源文件值</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">MutablePropertySources propertySources = ((ConfigurableEnvironment) <span class="keyword">this</span>.environment).getPropertySources();</span><br></pre></td></tr></table></figure>
+
+<p><img src="../../images/image-20220113111846185.png" alt="image-20220113111846185"></p>
+<p>至此 environment中就设置了资源文件中的key-value</p>
+<h3 id="Value"><a href="#Value" class="headerlink" title="@Value"></a>@Value</h3><p>applyMergedBeanDefinitionPostProcessors 这里调用CommonAnnotationBeanPostProcessor  支持了@PostConstruct，@PreDestroy,@Resource注解 和 AutowiredAnnotationBeanPostProcessor 支持 @Autowired,@Value注解；相关父接口MergedBeanDefinitionPostProcessor</p>
+<p>重点看AutowiredAnnotationBeanPostProcessor </p>
+<p><img src="../../images/image-20220113133455099.png" alt="image-20220113133455099"></p>
+<p>获取到metadata</p>
+<p><img src="../../images/image-20220113134342691.png" alt="image-20220113134342691"></p>
+<p>依赖注入核心方法中InstantiaAwreBeanPostProcessor 中</p>
+<p><img src="../../images/image-20220113133136293.png" alt="image-20220113133136293"></p>
+<p>这里进行了赋值</p>
+<p><img src="../../images/image-20220113140519970.png" alt="image-20220113140519970"></p>
+<p>详细可参考 <a href="https://www.itlifee.cn/archives/java/spring/spring-annotation-value-env.html">https://www.itlifee.cn/archives/java/spring/spring-annotation-value-env.html</a></p>
+]]></content>
+      <categories>
+        <category>源码</category>
+      </categories>
+      <tags>
+        <tag>Spring</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>spring注解启动流程</title>
+    <url>/post/d2ad07e1.html</url>
+    <content><![CDATA[<h2 id="启动基本代码"><a href="#启动基本代码" class="headerlink" title="启动基本代码"></a>启动基本代码</h2><p><img src="/images/image-20220106153028405.png" alt="image-20220106153028405"></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">AnnotatedBeanDefinitionReader</span><span class="params">(BeanDefinitionRegistry registry, Environment environment)</span> </span>&#123;</span><br><span class="line">   Assert.notNull(registry, <span class="string">&quot;BeanDefinitionRegistry must not be null&quot;</span>);</span><br><span class="line">   Assert.notNull(environment, <span class="string">&quot;Environment must not be null&quot;</span>);</span><br><span class="line">   <span class="keyword">this</span>.registry = registry;</span><br><span class="line">   <span class="keyword">this</span>.conditionEvaluator = <span class="keyword">new</span> ConditionEvaluator(registry, environment, <span class="keyword">null</span>);</span><br><span class="line">   <span class="comment">// 核心方法 spring定义的核心处理类注册</span></span><br><span class="line">   AnnotationConfigUtils.registerAnnotationConfigProcessors(<span class="keyword">this</span>.registry);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在registerAnnotationConfigProcessors中注册了四个注解配置处理器  </p>
+<ol>
+<li>ConfigurationClassPostProcessor</li>
+<li>AutowiredAnnotationBeanPostProcessor</li>
+<li>CommonAnnotationBeanPostProcessor</li>
+<li>PersistenceAnnotationBeanPostProcessor</li>
+</ol>
+<p><img src="/images/image-20220106155004260.png" alt="image-20220106155004260"></p>
+<p><img src="/images/image-20220106154912239.png" alt="image-20220106154912239"></p>
+<p>下面是自定义<strong>BeanFactoryPostProcessorr</strong></p>
+<p><img src="/images/image-20220106162028361.png" alt="image-20220106162028361"></p>
+<p><img src="/images/image-20220106163135334.png" alt="image-20220106163135334"></p>
+]]></content>
+      <categories>
+        <category>源码</category>
+      </categories>
+      <tags>
+        <tag>Spring</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>hexo+github next博客搭建</title>
+    <url>/post/3261e0a9.html</url>
+    <content><![CDATA[<h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><ol>
+<li><p>node.js安装 <img src="/images/nodejs%E7%89%88%E6%9C%AC.jpg" alt="node版本"></p>
+</li>
+<li><p>安装git</p>
+</li>
+<li><p>建立创库</p>
+<p> <img src="/images/1641378617(1).jpg" alt="仓库命名"></p>
+</li>
+<li><p>安装hexo</p>
+</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">npm install hexo-cli -g</span><br><span class="line">hexo init blog</span><br><span class="line">cd blog</span><br><span class="line">hexo g  生成静态文件</span><br><span class="line">hexo d  发布git</span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>主配置文件_config.yml 添加</li>
+</ol>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">deploy:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">&#x27;git&#x27;</span></span><br><span class="line">  <span class="attr">repository:</span> <span class="string">https://github.com/borabbb/borabbb.github.io</span></span><br><span class="line">  <span class="attr">branch:</span> <span class="string">main</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="next主题配置"><a href="#next主题配置" class="headerlink" title="next主题配置"></a>next主题配置</h2><p>安装搜索插件</p>
+<pre><code>1. 在博客根目录 https://github.com/flashlab/hexo-generator-search
+</code></pre>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">npm install hexo-generator-searchdb --save  --安装插件，用于生成博客索引数据</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>修改博客配置文件（根目录/_config.yml）添加</li>
+</ol>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">search:</span></span><br><span class="line">  <span class="attr">path:</span> <span class="string">search.xml</span></span><br><span class="line">  <span class="attr">field:</span> <span class="string">post</span></span><br><span class="line">  <span class="attr">format:</span> <span class="string">html</span></span><br><span class="line">  <span class="attr">limit:</span> <span class="number">10000</span></span><br><span class="line">  <span class="attr">content:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>把false 改为true</li>
+</ol>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Local search</span></span><br><span class="line"><span class="comment"># Dependencies: https://github.com/flashlab/hexo-generator-search</span></span><br><span class="line"><span class="attr">local_search:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">false</span></span><br><span class="line">  <span class="comment"># if auto, trigger search by changing input</span></span><br><span class="line">  <span class="comment"># if manual, trigger search by pressing enter key or search button</span></span><br><span class="line">  <span class="attr">trigger:</span> <span class="string">auto</span></span><br><span class="line">  <span class="comment"># show top n results per article, show all results by setting to -1</span></span><br><span class="line">  <span class="attr">top_n_per_article:</span> <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h3><figure class="highlight css"><table><tr><td class="code"><pre><span class="line">//文章目录默认展开</span><br><span class="line"><span class="selector-class">.post-toc</span> <span class="selector-class">.nav</span> <span class="selector-class">.nav-child</span> &#123; <span class="attribute">display</span>: block; &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="链接生成"><a href="#链接生成" class="headerlink" title="链接生成"></a>链接生成</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">npm install hexo-abbrlink --save</span><br></pre></td></tr></table></figure>
+
+<p>配置文件(_config.yml)里改为</p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">permalink:</span> <span class="string">post/:abbrlink.html</span></span><br><span class="line"><span class="attr">abbrlink:</span></span><br><span class="line">  <span class="attr">alg:</span> <span class="string">crc32</span>  <span class="comment"># 算法：crc16(default) and crc32</span></span><br><span class="line">  <span class="attr">rep:</span> <span class="string">hex</span>    <span class="comment"># 进制：dec(default) and hex</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="添加文件相关推荐"><a href="#添加文件相关推荐" class="headerlink" title="添加文件相关推荐"></a>添加文件相关推荐</h3>]]></content>
+      <categories>
+        <category>hexo</category>
+      </categories>
+      <tags>
+        <tag>杂项</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>新单流程</title>
+    <url>/post/9b80d9b4.html</url>
+    <content><![CDATA[<h2 id="新单主要流程"><a href="#新单主要流程" class="headerlink" title="新单主要流程"></a>新单主要流程</h2><h3 id="新单预录入"><a href="#新单预录入" class="headerlink" title="新单预录入"></a>新单预录入</h3><pre><code>    1. 录入保单是怎么来的，渠道、业务员、是否加急、合作方、是否健康告知、是否提交身份证等信息
+    1. 录入险种信息，主险、是年交 月缴等缴费方式
+    1. 保费录入
+    1. 预录入信息保存，分为保单层和险种层
+</code></pre>
+<p>​    占坑位行为</p>
+<h3 id="有-无-扫描录入"><a href="#有-无-扫描录入" class="headerlink" title="有/无 扫描录入"></a>有/无 扫描录入</h3><ol>
+<li>投被受（人）详细信息录入，</li>
+<li>投保人缴费方式录入，投保人告知信息录入</li>
+<li>被保人生存金领取方式录入，被保人告知信息；告知信息基本都是是否患病，是否有影响健康的生活习惯</li>
+<li> 预录入信息修改</li>
+<li>如果支持多主险 录入完毕后主险拆分</li>
+</ol>
+<h3 id="新单复核"><a href="#新单复核" class="headerlink" title="新单复核"></a>新单复核</h3><p>​        上一流程的录入信息复核，可修改。差错件录入、照会录入</p>
+<h3 id="自动核保"><a href="#自动核保" class="headerlink" title="自动核保"></a>自动核保</h3><p>​        自动触发或者手动触发</p>
+<p>​        跑契约类照会</p>
+<p>​        自动核保未通过，进入事务核保 人工核保。通过进行签单</p>
+<p>​        自动核保之后触发新单收费，实时/非实时</p>
+<p>​        实时扣款失败转非实时</p>
+<p>​        非实时每天定时扣款</p>
+<p>​        扣款系统每天自动发送扣款失败通知书</p>
+<p>​        </p>
+<h3 id="事务核保-–新契约照会处理"><a href="#事务核保-–新契约照会处理" class="headerlink" title="事务核保 –新契约照会处理"></a>事务核保 –新契约照会处理</h3><p>照会人工复核过程</p>
+<p>照会处理，根据用户回复对照会状态进行处理，可修改投保信息，照会处理完毕进行自动核保</p>
+<h3 id="人工复核"><a href="#人工复核" class="headerlink" title="人工复核"></a>人工复核</h3><p>合同信息</p>
+<p>可查询 既往偷被保人保单，保全、理赔信息</p>
+<p>可查询健康告知</p>
+<p>照会状态修改 核保类</p>
+<p>发送核保通知书</p>
+<p>给予核保结论</p>
+<p>人工核保涉及保费变更，在人工核保通过之后，将再次发起差额扣款</p>
+<p>回执回销</p>
+<p>核保订正</p>
+<p>新单撤销</p>
+<p>转账不成功保单冻结/解冻</p>
+<p>暂交退费</p>
+<p>分公司回访</p>
+<p>新单查询</p>
+<p>疾病代码维护 录入客户的疾病代码 用于人工核保</p>
+]]></content>
+      <categories>
+        <category>业务</category>
+      </categories>
+      <tags>
+        <tag>保险业务</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>保全流程</title>
+    <url>/post/2a98a13e.html</url>
+    <content><![CDATA[]]></content>
+      <categories>
+        <category>业务</category>
+      </categories>
+      <tags>
+        <tag>保险业务</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>所以分类</title>
+    <url>/categories/index.html</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title>All archives</title>
+    <url>/archives/index.html</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title>标签</title>
+    <url>/tags/index.html</url>
+    <content><![CDATA[]]></content>
+  </entry>
+</search>
